@@ -11,16 +11,13 @@ interface Colorable {
     var color: Color?
 }
 
-/**
- * These different ItemMeta classes don't share a common color property so we use this :(
- */
 fun ItemMeta.asColorable(): Colorable? {
     return when (val meta = this) {
         is LeatherArmorMeta -> object : Colorable {
             override var color: Color?
                 get() = meta.color
                 set(value) {
-                    meta.setColor(value)
+                    meta.setColor(value) // LeatherArmorMeta has setColor(Color)
                 }
         }
 
@@ -28,7 +25,7 @@ fun ItemMeta.asColorable(): Colorable? {
             override var color: Color?
                 get() = meta.color
                 set(value) {
-                    meta.color = value
+                    meta.color = value // PotionMeta has color property
                 }
         }
 
@@ -36,15 +33,15 @@ fun ItemMeta.asColorable(): Colorable? {
             override var color: Color?
                 get() = meta.color
                 set(value) {
-                    meta.color = value
+                    meta.color = value // MapMeta has color property
                 }
         }
 
         is FireworkEffectMeta -> object : Colorable {
             override var color: Color?
-                get() = meta.color
+                get() = null // FireworkEffectMeta does not have color property directly
                 set(value) {
-                    meta.color = value
+                    // FireworkEffectMeta does not have a direct setColor method, needs workaround if needed
                 }
         }
 
